@@ -30,3 +30,4 @@ Register → Login → Browse Cars → Search/Filter → View Details → Select
 - Rental days = ceiling of hours/24, minimum 1.
 - Company phone/email come from settings/env and `pages` context processor.
 - Tests: `python manage.py test`
+hello bye
