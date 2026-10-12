@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}My Bookings — TopGear{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h1 class="h3">My Bookings</h1>
+  {% for b in bookings %}
+  <div class="card mb-2"><div class="card-body"><strong>{{ b.reference }}</strong> — {{ b.car }} • {{ b.get_status_display }} • ₹{{ b.total_amount }} <a class="btn btn-sm btn-outline-dark ms-2" href="{% url 'bookings:confirmation' b.reference %}">View</a></div></div>
+  {% empty %}<p class="text-muted">No bookings yet. <a href="{% url 'cars:list' %}">Explore cars</a>.</p>{% endfor %}
+</div>
+{% endblock %}

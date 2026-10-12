@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Booking {{ booking.reference }} — TopGear{% endblock %}
+{% block content %}
+<div class="container py-5" style="max-width:640px">
+  <div class="alert alert-success">Booking confirmed! Reference: <strong>{{ booking.reference }}</strong> ({{ booking.get_payment_status_display }})</div>
+  <div class="card"><div class="card-body">
+    <h4>{{ booking.car }}</h4>
+    <ul class="list-unstyled small">
+      <li>Pickup: {{ booking.pickup_datetime }} — {{ booking.pickup_location }}</li>
+      <li>Return: {{ booking.return_datetime }} — {{ booking.return_location }}</li>
+      <li>Days: {{ booking.rental_days }} • Base: ₹{{ booking.base_amount }}</li>
+      <li>Discount: ₹{{ booking.discount_amount }} {% if booking.promo_code_used %}({{ booking.promo_code_used }}){% endif %}</li>
+      <li><strong>Total: ₹{{ booking.total_amount }}</strong></li>
+      <li>Status: {{ booking.get_status_display }} • Payment: {{ booking.get_payment_status_display }}</li>
+    </ul>
+    <a href="{% url 'accounts:dashboard' %}" class="btn btn-dark">Manage in Dashboard</a>
+    <a href="{% url 'cars:list' %}" class="btn btn-outline-secondary">Book another</a>
+  </div></div>
+</div>
+{% endblock %}

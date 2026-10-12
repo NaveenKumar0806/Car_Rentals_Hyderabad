@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}TopGear Self-Drive Cars — Your Journey, Your Rules{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="container py-5">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-6">
+        <span class="badge bg-warning text-dark mb-3">Hyderabad • Self-Drive Rentals</span>
+        <h1 class="display-5 fw-bold">Your Journey, Your Rules.</h1>
+        <p class="lead">TopGear self-drive car rentals in Hyderabad — transparent daily pricing, regular & luxury cars, flexible durations, easy online booking.</p>
+        <div class="d-flex gap-2 flex-wrap">
+          <a href="{% url 'cars:list' %}" class="btn btn-warning btn-lg">Explore Cars</a>
+          <a href="{% url 'pages:about' %}" class="btn btn-outline-light btn-lg">About Us</a>
+        </div>
+        <form method="get" action="{% url 'cars:list' %}" class="card p-3 mt-4 quick-search">
+          <div class="row g-2">
+            <div class="col-md-5"><input name="q" class="form-control" placeholder="Model, brand (e.g. Swift, Nexon)"></div>
+            <div class="col-md-4">
+              <select name="category" class="form-select"><option value="">All categories</option><option value="regular">Regular</option><option value="luxury">Luxury</option></select>
+            </div>
+            <div class="col-md-3"><button class="btn btn-dark w-100" type="submit">Search</button></div>
+          </div>
+        </form>
+      </div>
+      <div class="col-lg-6">
+        <img class="img-fluid rounded-4 shadow hero-img" src="https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=70" alt="Self-drive cars">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="h4 mb-0">Special Offers & Promotions</h2>
+    <a href="{% url 'cars:list' %}" class="btn btn-sm btn-outline-dark">Explore eligible cars</a>
+  </div>
+  <div class="row g-3">
+    {% for o in offers %}
+    <div class="col-md-4">
+      <div class="card h-100 offer-card">
+        <div class="card-body">
+          <h5 class="card-title">{{ o.title }}</h5>
+          <p class="card-text small">{{ o.description }}</p>
+          <ul class="small text-muted mb-2">
+            <li>Min {{ o.min_days }} day(s), {{ o.discount_percent }}% off{% if o.max_discount %} (up to ₹{{ o.max_discount }}){% endif %}</li>
+            <li>Valid {{ o.valid_from }} → {{ o.valid_to }}</li>
+            {% if o.promo_code %}<li>Code: <code>{{ o.promo_code }}</code></li>{% endif %}
+          </ul>
+          <a href="{% url 'cars:list' %}" class="btn btn-sm btn-warning">Explore Cars</a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p class="text-muted">No active offers right now. Check back soon.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="container my-5">
+  <h2 class="h4 mb-3">Popular Cars</h2>
+  <div class="row g-3">
+    {% for car in popular %}
+    <div class="col-md-3">{% include "cars/_car_card.html" with car=car %}</div>
+    {% empty %}<p class="text-muted">No cars available yet.</p>{% endfor %}
+  </div>
+</section>
+
+<section class="why bg-light py-5">
+  <div class="container">
+    <h2 class="h4 mb-4">Why Choose TopGear?</h2>
+    <div class="row g-3">
+      <div class="col-md-4"><div class="card h-100"><div class="card-body"><h6>Easy online booking</h6><p class="small text-muted mb-0">Search, check availability, and book in minutes.</p></div></div></div>
+      <div class="col-md-4"><div class="card h-100"><div class="card-body"><h6>Transparent pricing</h6><p class="small text-muted mb-0">Daily rates in INR with automatic cost estimates.</p></div></div></div>
+      <div class="col-md-4"><div class="card h-100"><div class="card-body"><h6>Regular & luxury range</h6><p class="small text-muted mb-0">Hatchbacks, SUVs, sedans and premium cars.</p></div></div></div>
+      <div class="col-md-4"><div class="card h-100"><div class="card-body"><h6>Flexible durations</h6><p class="small text-muted mb-0">Hourly-accurate day calculation for fair billing.</p></div></div></div>
+      <div class="col-md-4"><div class="card h-100"><div class="card-body"><h6>Hyderabad focused</h6><p class="small text-muted mb-0">Convenient pickup & drop in the city.</p></div></div></div>
+      <div class="col-md-4"><div class="card h-100"><div class="card-body"><h6>Customer support</h6><p class="small text-muted mb-0">Call <a href="tel:{{ COMPANY_PHONE_TEL }}">{{ COMPANY_PHONE }}</a> for help.</p></div></div></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

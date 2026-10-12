@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Cancel {{ booking.reference }} — TopGear{% endblock %}
+{% block content %}
+<div class="container py-5" style="max-width:520px">
+  <h1 class="h4">Cancel booking {{ booking.reference }}?</h1>
+  <p class="text-muted small">Cancellation subject to policy. This cannot be undone.</p>
+  <form method="post">{% csrf_token %}<button class="btn btn-danger" type="submit">Yes, cancel</button> <a class="btn btn-outline-secondary" href="{% url 'accounts:dashboard' %}">Keep booking</a></form>
+</div>
+{% endblock %}

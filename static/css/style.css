@@ -1,0 +1,16 @@
+:root { --tg-dark: #0d1b2a; --tg-accent: #f5a623; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f7f8fa; }
+.tg-nav { background: linear-gradient(90deg, #0d1b2a, #1b2f4a); }
+.logo-badge { background: #f5a623; color: #0d1b2a; font-weight: 800; padding: 4px 10px; border-radius: 8px; }
+.hero { background: linear-gradient(120deg, #0d1b2a 0%, #243b55 100%); color: #fff; }
+.hero-img { max-height: 380px; object-fit: cover; width: 100%; }
+.quick-search { background: rgba(255,255,255,.95); }
+.offer-card { border-top: 4px solid var(--tg-accent); }
+.car-card { transition: transform .15s ease, box-shadow .15s ease; }
+.car-card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(0,0,0,.12); }
+.car-card img.card-img-top { height: 170px; object-fit: cover; }
+.placeholder-img { height: 170px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg,#243b55,#0d1b2a); color: #f5a623; font-weight: 800; font-size: 1.5rem; }
+.tg-footer { background: #0d1b2a; color: #cfd8e3; }
+.tg-footer a { color: #f5c86b; text-decoration: none; }
+.tg-footer a:hover { text-decoration: underline; }
+.why .card { border: 0; box-shadow: 0 2px 10px rgba(0,0,0,.06); }

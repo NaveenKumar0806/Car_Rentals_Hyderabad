@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}TopGear Self-Drive Cars — Hyderabad{% endblock %}</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark tg-nav sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'pages:home' %}">
+      <span class="logo-badge">TG</span><span class="ms-2">TopGear <small class="fw-normal">Self-Drive Cars</small></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="{% url 'pages:home' %}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'pages:about' %}">About Us</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'cars:list' %}">Explore Cars</a></li>
+        {% if user.is_authenticated %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'bookings:list' %}">My Bookings</a></li>
+        {% endif %}
+      </ul>
+      <form class="d-flex me-2" role="search" method="get" action="{% url 'cars:list' %}">
+        <input class="form-control form-control-sm me-2" type="search" name="q" placeholder="Search brand / model" value="{{ request.GET.q }}">
+        <button class="btn btn-outline-light btn-sm" type="submit"><i class="bi bi-search"></i></button>
+      </form>
+      <ul class="navbar-nav">
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"><i class="bi bi-person-circle"></i> {{ user.username }}</a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="{% url 'accounts:dashboard' %}">Profile & Dashboard</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><form method="post" action="{% url 'accounts:logout' %}" class="px-3">{% csrf_token %}<button class="btn btn-link p-0" type="submit">Logout</button></form></li>
+          </ul>
+        </li>
+        {% else %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Login</a></li>
+        <li class="nav-item"><a class="btn btn-warning btn-sm mt-1" href="{% url 'accounts:register' %}">Register</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% if messages %}
+<div class="container mt-3">
+  {% for message in messages %}
+  <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+    {{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<main>{% block content %}{% endblock %}</main>
+
+<footer class="tg-footer mt-5">
+  <div class="container py-5">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <h5>TopGear Self-Drive Cars</h5>
+        <p class="small">Self-drive rentals in {{ COMPANY_CITY }}. Transparent pricing, flexible durations, 24x7 support.</p>
+        <p class="small mb-1"><i class="bi bi-telephone"></i> <a href="tel:{{ COMPANY_PHONE_TEL }}">{{ COMPANY_PHONE }}</a></p>
+        <p class="small"><i class="bi bi-envelope"></i> <a href="mailto:{{ COMPANY_EMAIL }}">{{ COMPANY_EMAIL }}</a></p>
+      </div>
+      <div class="col-md-4">
+        <h6>Quick Links</h6>
+        <ul class="list-unstyled small">
+          <li><a href="{% url 'pages:home' %}">Home</a></li>
+          <li><a href="{% url 'pages:about' %}">About Us</a></li>
+          <li><a href="{% url 'cars:list' %}">Explore Cars</a></li>
+          <li><a href="{% url 'accounts:dashboard' %}">My Dashboard</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h6>Support & Legal</h6>
+        <ul class="list-unstyled small">
+          <li><a href="{% url 'pages:about' %}#support">Customer Support</a></li>
+          <li><a href="{% url 'pages:about' %}#terms">Terms & Conditions</a></li>
+          <li><a href="{% url 'pages:about' %}#privacy">Privacy Policy</a></li>
+        </ul>
+        <div class="d-flex gap-3 fs-5">
+          <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" aria-label="X"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <p class="small text-center mb-0">© {% now "Y" %} {{ COMPANY_NAME }}, Hyderabad. {{ PAYMENT_POLICY_LABEL }}.</p>
+  </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/main.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ car }} — TopGear{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <a href="{% url 'cars:list' %}" class="btn btn-sm btn-outline-secondary mb-3">← Back to cars</a>
+  <div class="row g-4">
+    <div class="col-lg-6">
+      {% if car.display_image %}<img src="{{ car.display_image }}" class="img-fluid rounded shadow" alt="{{ car }}">{% else %}<div class="placeholder-img rounded">TopGear</div>{% endif %}
+      {% if car.images.all %}
+      <div class="row g-2 mt-2">
+        {% for img in car.images.all %}{% if img.display_image %}<div class="col-4"><img src="{{ img.display_image }}" class="img-fluid rounded" alt="{{ img.caption|default:car }}">{% endif %}</div>{% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    <div class="col-lg-6">
+      <span class="badge bg-secondary">{{ car.category }}</span>
+      <h1 class="h3 mt-2">{{ car.brand }} {{ car.model }}</h1>
+      <p class="text-muted">{{ car.get_transmission_display }} • {{ car.get_fuel_type_display }} • {{ car.seating_capacity }} seater</p>
+      <h3>₹{{ car.daily_price }} <small class="fs-6 text-muted">/ day</small></h3>
+      <p>{% if car.is_available %}<span class="badge bg-success">Available</span>{% else %}<span class="badge bg-danger">Unavailable</span>{% endif %}</p>
+      {% if car.feature_list %}<h6>Features</h6><ul class="small">{% for f in car.feature_list %}<li>{{ f }}</li>{% endfor %}</ul>{% endif %}
+      {% if car.rental_terms %}<h6>Rental terms</h6><p class="small">{{ car.rental_terms }}</p>{% endif %}
+      <h6>Pickup & Drop</h6><p class="small">{{ car.pickup_info }}</p>
+      <div class="d-flex gap-2">
+        <a href="{% url 'bookings:create' car.pk %}" class="btn btn-warning btn-lg">Book Now</a>
+        <a href="tel:{{ COMPANY_PHONE_TEL }}" class="btn btn-outline-dark btn-lg">Call to Book</a>
+      </div>
+      <p class="small text-muted mt-2">{{ PAYMENT_POLICY_LABEL }}</p>
+    </div>
+  </div>
+  {% if related %}
+  <h4 class="mt-5">Similar cars</h4>
+  <div class="row g-3">{% for c in related %}<div class="col-md-3">{% include "cars/_car_card.html" with car=c %}</div>{% endfor %}</div>
+  {% endif %}
+</div>
+{% endblock %}

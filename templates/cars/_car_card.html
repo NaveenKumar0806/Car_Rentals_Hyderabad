@@ -1,0 +1,18 @@
+<div class="card h-100 car-card">
+  {% if car.display_image %}
+  <img src="{{ car.display_image }}" class="card-img-top" alt="{{ car }}" loading="lazy">
+  {% else %}
+  <div class="card-img-top placeholder-img">TopGear</div>
+  {% endif %}
+  <div class="card-body d-flex flex-column">
+    <span class="badge {% if car.category.name == 'luxury' %}bg-dark{% else %}bg-secondary{% endif %} mb-2 align-self-start">{{ car.category }}</span>
+    <h5 class="card-title mb-1">{{ car.brand }} {{ car.model }}</h5>
+    <p class="small text-muted mb-2">{{ car.get_transmission_display }} • {{ car.get_fuel_type_display }} • {{ car.seating_capacity }} seats</p>
+    <p class="fw-bold mb-1">₹{{ car.daily_price }} <small class="fw-normal text-muted">/ day</small></p>
+    <p class="small mb-3">{% if car.is_available %}<span class="text-success">Available</span>{% else %}<span class="text-danger">Unavailable</span>{% endif %}</p>
+    <div class="mt-auto d-flex gap-2">
+      <a href="{% url 'cars:detail' car.pk %}" class="btn btn-sm btn-outline-dark flex-fill">View Details</a>
+      <a href="{% url 'bookings:create' car.pk %}" class="btn btn-sm btn-warning flex-fill">Book Now</a>
+    </div>
+  </div>
+</div>

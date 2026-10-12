@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard — TopGear{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h1 class="h3">Welcome, {{ profile.full_name|default:user.username }}</h1>
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <div class="card"><div class="card-body">
+        <h5>Account details</h5>
+        <p class="small mb-1">Username: {{ user.username }}</p>
+        <p class="small mb-3">Joined: {{ user.date_joined|date }}</p>
+        <form method="post">{% csrf_token %}
+          <div class="mb-2"><label class="form-label">Email</label>{{ form.email }}</div>
+          <div class="mb-2"><label class="form-label">Full name</label>{{ form.full_name }}</div>
+          <div class="mb-2"><label class="form-label">Mobile</label>{{ form.mobile_number }}</div>
+          {% if form.errors %}<div class="alert alert-danger small">{{ form.errors }}</div>{% endif %}
+          <button class="btn btn-sm btn-dark" type="submit">Update profile</button>
+        </form>
+        <form method="post" action="{% url 'accounts:logout' %}" class="mt-3">{% csrf_token %}<button class="btn btn-sm btn-outline-danger" type="submit">Logout</button></form>
+      </div></div>
+    </div>
+    <div class="col-lg-8">
+      <h4>Current & Upcoming</h4>
+      {% for b in upcoming %}
+      <div class="card mb-2"><div class="card-body d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div><strong>{{ b.reference }}</strong> — {{ b.car }}<br><small class="text-muted">{{ b.pickup_datetime }} → {{ b.return_datetime }} • {{ b.get_status_display }} • ₹{{ b.total_amount }}</small></div>
+        <div class="d-flex gap-2"><a class="btn btn-sm btn-outline-dark" href="{% url 'bookings:confirmation' b.reference %}">View</a><a class="btn btn-sm btn-outline-danger" href="{% url 'bookings:cancel' b.reference %}">Cancel</a></div>
+      </div></div>
+      {% empty %}<p class="text-muted">No upcoming bookings.</p>{% endfor %}
+      <h4 class="mt-4">History</h4>
+      {% for b in history %}
+      <div class="card mb-2"><div class="card-body"><strong>{{ b.reference }}</strong> — {{ b.car }}<br><small class="text-muted">{{ b.pickup_datetime }} → {{ b.return_datetime }} • {{ b.get_status_display }} • ₹{{ b.total_amount }}</small></div></div>
+      {% empty %}<p class="text-muted">No past bookings.</p>{% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Explore Cars — TopGear{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h1 class="h3">Explore Cars</h1>
+  <form method="get" class="card p-3 mb-4">
+    <div class="row g-2">
+      <div class="col-md-3"><input name="q" value="{{ filters.q }}" class="form-control" placeholder="Car name or brand"></div>
+      <div class="col-md-2">
+        <select name="category" class="form-select"><option value="">Regular + Luxury</option><option value="regular" {% if filters.category == 'regular' %}selected{% endif %}>Regular</option><option value="luxury" {% if filters.category == 'luxury' %}selected{% endif %}>Luxury</option></select>
+      </div>
+      <div class="col-md-2">
+        <select name="fuel" class="form-select"><option value="">Any fuel</option><option value="petrol" {% if filters.fuel == 'petrol' %}selected{% endif %}>Petrol</option><option value="diesel" {% if filters.fuel == 'diesel' %}selected{% endif %}>Diesel</option><option value="cng" {% if filters.fuel == 'cng' %}selected{% endif %}>CNG</option><option value="electric" {% if filters.fuel == 'electric' %}selected{% endif %}>Electric</option><option value="hybrid" {% if filters.fuel == 'hybrid' %}selected{% endif %}>Hybrid</option></select>
+      </div>
+      <div class="col-md-2">
+        <select name="transmission" class="form-select"><option value="">Any gear</option><option value="manual" {% if filters.transmission == 'manual' %}selected{% endif %}>Manual</option><option value="automatic" {% if filters.transmission == 'automatic' %}selected{% endif %}>Automatic</option></select>
+      </div>
+      <div class="col-md-1"><input name="seats" value="{{ filters.seats }}" class="form-control" placeholder="Seats"></div>
+      <div class="col-md-2"><input name="max_price" value="{{ filters.max_price }}" class="form-control" placeholder="Max ₹/day"></div>
+    </div>
+    <div class="row g-2 mt-1">
+      <div class="col-md-3">
+        <select name="sort" class="form-select"><option value="">Sort: default</option><option value="price_asc" {% if filters.sort == 'price_asc' %}selected{% endif %}>Price low → high</option><option value="price_desc" {% if filters.sort == 'price_desc' %}selected{% endif %}>Price high → low</option></select>
+      </div>
+      <div class="col-md-3 form-check mt-2"><input type="checkbox" name="available" class="form-check-input" id="av" {% if filters.available == 'on' %}checked{% endif %}><label for="av" class="form-check-label">Available only</label></div>
+      <div class="col-md-6 text-end"><a href="{% url 'cars:list' %}" class="btn btn-outline-secondary">Reset</a> <button class="btn btn-dark" type="submit">Apply</button></div>
+    </div>
+  </form>
+
+  {% if not filters.category or filters.category == 'regular' %}
+  <h2 class="h4">Regular Cars</h2>
+  <div class="row g-3 mb-4">
+    {% for car in regular_cars %}<div class="col-md-3">{% include "cars/_car_card.html" with car=car %}</div>{% empty %}<p class="text-muted">No regular cars match.</p>{% endfor %}
+  </div>
+  {% endif %}
+  {% if not filters.category or filters.category == 'luxury' %}
+  <h2 class="h4">Luxury Cars</h2>
+  <div class="row g-3">
+    {% for car in luxury_cars %}<div class="col-md-3">{% include "cars/_car_card.html" with car=car %}</div>{% empty %}<p class="text-muted">No luxury cars match.</p>{% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

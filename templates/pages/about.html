@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}About Us — TopGear{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1>About TopGear</h1>
+  <p class="lead">TopGear is a self-drive car rental service operating in Hyderabad, Telangana, India.</p>
+  <p>Our mission is to make convenient, reliable self-drive travel accessible to everyone — with transparent pricing, well-maintained cars, and easy online booking.</p>
+  <h4>Why choose us?</h4>
+  <ul>
+    <li>Multiple vehicle categories (regular & luxury)</li>
+    <li>Flexible rental durations with automatic price calculation</li>
+    <li>Clear rental terms and availability checks</li>
+    <li>Hyderabad-focused pickup & drop points</li>
+  </ul>
+  <h4 id="support">Customer support</h4>
+  <p>Service area: Hyderabad, Telangana.<br>
+  Phone: <a href="tel:{{ COMPANY_PHONE_TEL }}">{{ COMPANY_PHONE }}</a> (<a href="tel:{{ COMPANY_PHONE_TEL }}">Call Us to Book</a>)<br>
+  Email: <a href="mailto:{{ COMPANY_EMAIL }}">{{ COMPANY_EMAIL }}</a></p>
+  <h4 id="terms">Terms & Conditions (summary)</h4>
+  <p class="small text-muted">Valid driving licence required. Fuel policy, security deposit, and late-return charges as shown at booking time. Cancellation subject to policy.</p>
+  <h4 id="privacy">Privacy Policy (summary)</h4>
+  <p class="small text-muted">We use your details only for account and booking management. Passwords are hashed; sensitive data is never displayed publicly.</p>
+  <a href="{% url 'cars:list' %}" class="btn btn-warning mt-3">Browse Available Vehicles</a>
+</div>
+{% endblock %}

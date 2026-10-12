@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Book {{ car }} — TopGear{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h1 class="h3">Book {{ car.brand }} {{ car.model }}</h1>
+  <p class="text-muted">₹{{ car.daily_price }} / day • {{ PAYMENT_POLICY_LABEL }}</p>
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <form method="post" id="booking-form" novalidate>{% csrf_token %}
+        {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+        {% for field in form %}
+        <div class="mb-3"><label class="form-label">{{ field.label }}</label>{{ field }}{% if field.errors %}<div class="text-danger small">{{ field.errors }}</div>{% endif %}</div>
+        {% endfor %}
+        <div class="card p-3 mb-3 bg-light"><h6>Booking summary</h6><p class="small mb-0" id="estimate-box">Select pickup & return dates to see estimated cost.</p></div>
+        <button class="btn btn-warning btn-lg w-100" type="submit">Confirm Booking</button>
+      </form>
+    </div>
+    <div class="col-lg-5">
+      <div class="card"><div class="card-body">
+        {% if car.display_image %}<img src="{{ car.display_image }}" class="img-fluid rounded mb-2" alt="{{ car }}">{% endif %}
+        <h5>{{ car }}</h5>
+        <p class="small text-muted">{{ car.get_transmission_display }} • {{ car.get_fuel_type_display }} • {{ car.seating_capacity }} seats</p>
+        <p class="small">{{ car.pickup_info }}</p>
+      </div></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+const pricePerDay = parseFloat("{{ car.daily_price }}");
+const pickupEl = document.getElementById("id_pickup_datetime");
+const returnEl = document.getElementById("id_return_datetime");
+const box = document.getElementById("estimate-box");
+function updateEstimate() {
+  if (!pickupEl.value || !returnEl.value) return;
+  const p = new Date(pickupEl.value), r = new Date(returnEl.value);
+  if (r <= p) { box.textContent = "Return must be after pickup."; return; }
+  const days = Math.max(1, Math.ceil((r - p) / 86400000));
+  box.textContent = `${days} day(s) × ₹${pricePerDay} = ₹${(days * pricePerDay).toFixed(2)} (before offers)`;
+}
+pickupEl?.addEventListener("change", updateEstimate);
+returnEl?.addEventListener("change", updateEstimate);
+</script>
+{% endblock %}
